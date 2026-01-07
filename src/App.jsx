@@ -4,6 +4,8 @@ import DashboardLayout from "./layouts/DashboardLayout";
 import Dashboard from "./pages/Dashboard";
 import Customers from "./pages/Customers";
 import PrintJobs from "./pages/PrintJobs";
+import BusinessSettings from "./pages/BusinessSettings";
+
 
 export default function App() {
   return (
@@ -13,6 +15,8 @@ export default function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/customers" element={<Customers />} />
           <Route path="/jobs" element={<PrintJobs />} />
+          <Route path="/settings/business" element={<BusinessSettings />} />
+
         </Route>
       </Routes>
     </BrowserRouter>

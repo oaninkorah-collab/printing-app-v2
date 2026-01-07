@@ -1,5 +1,5 @@
 const DB_NAME = "printingAppDB";
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 
 export function openDB() {
   return new Promise((resolve, reject) => {
@@ -14,6 +14,12 @@ export function openDB() {
           autoIncrement: true,
         });
       }
+
+      if (!db.objectStoreNames.contains("settings")) {
+  db.createObjectStore("settings", {
+    keyPath: "key",
+  });
+}
 
       if (!db.objectStoreNames.contains("jobs")) {
         db.createObjectStore("jobs", {

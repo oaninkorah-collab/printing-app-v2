@@ -69,6 +69,8 @@ export default function Sidebar() {
             <NavLink to="/config/categories">Service Categories</NavLink>
             <NavLink to="/config/customers">Customer Types</NavLink>
             <NavLink to="/config/sizes">Preset Sizes</NavLink>
+            
+            <NavLink to="/settings/business">Business Info</NavLink>
           </div>
         )}
 
