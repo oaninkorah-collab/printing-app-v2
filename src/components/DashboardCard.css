@@ -1,0 +1,48 @@
+.dash-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.dash-card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dash-card-title {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.dash-card-value {
+  margin: 2px 0;
+}
+
+/* Color themes */
+.dash-card.blue .dash-card-icon {
+  background: #e0f2fe;
+  color: #0284c7;
+}
+
+.dash-card.green .dash-card-icon {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.dash-card.orange .dash-card-icon {
+  background: #ffedd5;
+  color: #ea580c;
+}
+
+.dash-card.purple .dash-card-icon {
+  background: #ede9fe;
+  color: #7c3aed;
+}

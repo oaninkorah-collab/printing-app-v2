@@ -8,11 +8,13 @@ import BusinessSettings from "./pages/BusinessSettings";
 import Receivables from "./pages/Receivables";
 
 
+
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route element={<DashboardLayout />}>
+      <Route path="/" element={<Dashboard />} />
           <Route path="/" element={<Dashboard />} />
           <Route path="/customers" element={<Customers />} />
           <Route path="/jobs" element={<PrintJobs />} />
