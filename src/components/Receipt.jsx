@@ -1,29 +1,44 @@
 import { useEffect, useState } from "react";
 import { getAllItems } from "../db/indexedDB";
 import { printReceipt } from "../utils/printReceipt";
+import { downloadReceiptPdf } from "../utils/downloadReceiptPdf";
 
-export default function Receipt({ job, payments, customer, autoPrint }) {
+export default function Receipt({
+  job,
+  payments,
+  customer,
+  autoPrint = false,
+  autoPdf = false,
+}) {
   const [business, setBusiness] = useState(null);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
     async function loadBusiness() {
       const data = await getAllItems("settings");
-      const biz = data.find(d => d.key === "business");
+      const biz = data.find((d) => d.key === "business");
       setBusiness(biz || null);
       setReady(true);
     }
     loadBusiness();
   }, []);
 
-  // 🔑 Print ONLY after business info is ready
+  // 🔑 Trigger print OR PDF only after data is ready
   useEffect(() => {
-    if (ready && autoPrint) {
+    if (!ready) return;
+
+    if (autoPrint) {
       setTimeout(() => {
         printReceipt();
       }, 100);
     }
-  }, [ready, autoPrint]);
+
+    if (autoPdf) {
+      setTimeout(() => {
+        downloadReceiptPdf();
+      }, 100);
+    }
+  }, [ready, autoPrint, autoPdf]);
 
   const receiptNo = `REC-${String(job.id).padStart(6, "0")}`;
   const date = new Date().toLocaleString();
@@ -42,8 +57,10 @@ export default function Receipt({ job, payments, customer, autoPrint }) {
               style={{ height: 60, marginBottom: 6 }}
             />
           )}
-          <strong>{business.name}</strong><br />
-          {business.phone}<br />
+          <strong>{business.name}</strong>
+          <br />
+          {business.phone}
+          <br />
           {business.location}
           <hr />
         </div>
@@ -75,7 +92,8 @@ export default function Receipt({ job, payments, customer, autoPrint }) {
         <>
           <hr />
           <p>
-            <b>Last Payment:</b> {lastPayment.amount.toFixed(2)} ({lastPayment.method})
+            <b>Last Payment:</b> {lastPayment.amount.toFixed(2)} (
+            {lastPayment.method})
           </p>
         </>
       )}

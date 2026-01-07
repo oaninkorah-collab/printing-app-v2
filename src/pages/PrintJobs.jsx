@@ -50,9 +50,11 @@ export default function PrintJobs() {
                   job,
                   payments: jobPayments,
                   customer,
+                  mode: "pdf",
                 })
               }
             >
+              Download PDF
               Print Receipt
             </button>
           </div>
@@ -63,11 +65,12 @@ export default function PrintJobs() {
       {printData && (
         <div style={{ position: "absolute", left: "-9999px" }}>
           <Receipt
-            job={printData.job}
-            payments={printData.payments}
-            customer={printData.customer}
-            autoPrint
-          />
+  job={printData.job}
+  payments={printData.payments}
+  customer={printData.customer}
+  autoPrint={printData.mode !== "pdf"}
+  autoPdf={printData.mode === "pdf"}
+/>
         </div>
       )}
     </div>

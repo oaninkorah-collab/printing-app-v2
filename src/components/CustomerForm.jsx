@@ -1,9 +1,25 @@
-import { useState } from "react";
-import { addItem } from "../db/indexedDB";
+import { useEffect, useState } from "react";
+import { addItem, getAllItems } from "../db/indexedDB";
+
 
 export default function CustomerForm({ onSaved }) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  
+  const [types, setTypes] = useState([]);
+  const [typeId, setTypeId] = useState("");
+
+useEffect(() => {
+  getAllItems("customerTypes").then(setTypes);
+}, []);
+
+useEffect(() => {
+  async function loadTypes() {
+    const data = await getAllItems("customerTypes");
+    setTypes(data);
+  }
+  loadTypes();
+}, []);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -13,11 +29,11 @@ export default function CustomerForm({ onSaved }) {
       return;
     }
 
-    await addItem("customers", {
-      name,
-      phone,
-      createdAt: new Date().toISOString(),
-    });
+await addItem("customers", {
+  name,
+  phone,
+  customerTypeId: Number(typeId),
+});
 
     setName("");
     setPhone("");
@@ -41,6 +57,19 @@ export default function CustomerForm({ onSaved }) {
         onChange={(e) => setPhone(e.target.value)}
         style={styles.input}
       />
+
+<select
+  value={typeId}
+  onChange={(e) => setTypeId(e.target.value)}
+  style={styles.input}
+>
+  <option value="">Select Customer Type</option>
+  {types.map((t) => (
+    <option key={t.id} value={t.id}>
+      {t.name}
+    </option>
+  ))}
+</select>
 
       <button style={styles.button}>Save Customer</button>
     </form>

@@ -1,5 +1,5 @@
 const DB_NAME = "printingAppDB";
-const DB_VERSION = 2;
+const DB_VERSION = 4;
 
 export function openDB() {
   return new Promise((resolve, reject) => {
@@ -34,6 +34,21 @@ export function openDB() {
           autoIncrement: true,
         });
       }
+
+      if (!db.objectStoreNames.contains("pricingRules")) {
+  db.createObjectStore("pricingRules", {
+    keyPath: "id",
+    autoIncrement: true,
+  });
+}
+
+      if (!db.objectStoreNames.contains("customerTypes")) {
+  db.createObjectStore("customerTypes", {
+    keyPath: "id",
+    autoIncrement: true,
+  });
+}
+
     };
 
     request.onsuccess = () => resolve(request.result);
