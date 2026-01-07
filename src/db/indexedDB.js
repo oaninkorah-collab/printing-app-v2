@@ -80,3 +80,14 @@ export async function deleteItem(store, id) {
     req.onerror = () => reject(req.error);
   });
 }
+
+export async function putItem(store, data) {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(store, "readwrite");
+    const req = tx.objectStore(store).put(data);
+    req.onsuccess = () => resolve(true);
+    req.onerror = () => reject(req.error);
+  });
+}
+

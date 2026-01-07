@@ -21,16 +21,6 @@ export default function PrintJobs() {
     loadData();
   }, []);
 
-  // trigger print after render
-  useEffect(() => {
-    if (printData) {
-      setTimeout(() => {
-        printReceipt();
-        setPrintData(null);
-      }, 100);
-    }
-  }, [printData]);
-
   return (
     <div>
       <h1>Print Jobs</h1>
@@ -76,6 +66,7 @@ export default function PrintJobs() {
             job={printData.job}
             payments={printData.payments}
             customer={printData.customer}
+            autoPrint
           />
         </div>
       )}

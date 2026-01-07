@@ -1,12 +1,54 @@
-export default function Receipt({ job, payments, customer }) {
+import { useEffect, useState } from "react";
+import { getAllItems } from "../db/indexedDB";
+import { printReceipt } from "../utils/printReceipt";
+
+export default function Receipt({ job, payments, customer, autoPrint }) {
+  const [business, setBusiness] = useState(null);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    async function loadBusiness() {
+      const data = await getAllItems("settings");
+      const biz = data.find(d => d.key === "business");
+      setBusiness(biz || null);
+      setReady(true);
+    }
+    loadBusiness();
+  }, []);
+
+  // 🔑 Print ONLY after business info is ready
+  useEffect(() => {
+    if (ready && autoPrint) {
+      setTimeout(() => {
+        printReceipt();
+      }, 100);
+    }
+  }, [ready, autoPrint]);
+
   const receiptNo = `REC-${String(job.id).padStart(6, "0")}`;
   const date = new Date().toLocaleString();
-
   const totalPaid = payments.reduce((s, p) => s + p.amount, 0);
   const lastPayment = payments[payments.length - 1];
 
   return (
     <div id="receipt" style={styles.receipt}>
+      {/* BUSINESS HEADER */}
+      {business && (
+        <div style={{ textAlign: "center", marginBottom: 10 }}>
+          {business.logo && (
+            <img
+              src={business.logo}
+              alt="Logo"
+              style={{ height: 60, marginBottom: 6 }}
+            />
+          )}
+          <strong>{business.name}</strong><br />
+          {business.phone}<br />
+          {business.location}
+          <hr />
+        </div>
+      )}
+
       <h3 style={{ textAlign: "center" }}>PRINT RECEIPT</h3>
 
       <p><b>Receipt No:</b> {receiptNo}</p>
@@ -33,8 +75,7 @@ export default function Receipt({ job, payments, customer }) {
         <>
           <hr />
           <p>
-            <b>Last Payment:</b> {lastPayment.amount.toFixed(2)} (
-            {lastPayment.method})
+            <b>Last Payment:</b> {lastPayment.amount.toFixed(2)} ({lastPayment.method})
           </p>
         </>
       )}

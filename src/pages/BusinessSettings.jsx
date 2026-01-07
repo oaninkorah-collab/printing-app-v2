@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { addItem, getAllItems } from "../db/indexedDB";
+import { putItem, getAllItems } from "../db/indexedDB";
 
 export default function BusinessSettings() {
   const [name, setName] = useState("");
@@ -31,13 +31,14 @@ export default function BusinessSettings() {
   }
 
   async function saveSettings() {
-    await addItem("settings", {
-      key: "business",
-      name,
-      phone,
-      location,
-      logo,
-    });
+    await putItem("settings", {
+  key: "business",
+  name,
+  phone,
+  location,
+  logo,
+});
+
     alert("Business info saved");
   }
 
